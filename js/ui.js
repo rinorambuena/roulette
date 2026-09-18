@@ -86,6 +86,7 @@ function showResult(name, type) {
   }
   banner.style.display = "";
   document.getElementById("spin-btn").disabled = false;
+  playDing();
 }
 
 function showEliminated(name, onContinue) {

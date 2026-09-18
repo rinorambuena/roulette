@@ -67,6 +67,7 @@ function spinOnce(wheelSlots, onDone) {
   const n = wheelSlots.length;
   const arc = (2 * Math.PI) / n;
   const winnerIndex = Math.floor(Math.random() * n);
+  let lastSegment = -1;
 
   const extraSpins = (5 + Math.floor(Math.random() * 4)) * 2 * Math.PI;
   const pointerAngle = -Math.PI / 2;
@@ -93,6 +94,13 @@ function spinOnce(wheelSlots, onDone) {
     const t = Math.min(elapsed / duration, 1);
     state.currentAngle = startAngle + (endAngle - startAngle) * easeOut(t);
     drawWheel(state.currentAngle, wheelSlots);
+
+    const pointerAngle = ((-Math.PI / 2) - state.currentAngle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+    const seg = Math.floor(pointerAngle / arc) % n;
+    if (seg !== lastSegment) {
+      playTick(1 - t);
+      lastSegment = seg;
+    }
 
     if (t < 1) {
       state.animFrame = requestAnimationFrame(frame);
